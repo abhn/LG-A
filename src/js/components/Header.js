@@ -12,7 +12,6 @@ export default class Header extends React.Component {
 				<div class="form-group">
 				  <label for="selectTiles">Select Tiles</label>
 				  <select class="form input-small" id="selectTiles">
-						<option value="6">6</option>
 				    <option value="8">8</option>
 				    <option value="12">12</option>
 						<option value="16">16</option>

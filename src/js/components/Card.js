@@ -11,9 +11,6 @@ export default class Card extends React.Component {
 		this.state = {
 		};
 
-		localStorage.clear();
-		localStorage.setItem("flipCount", 0);
-
 		this.showBack = this.showBack.bind(this);
 		this.showFront = this.showFront.bind(this);
 		this.handleOnFlip = this.handleOnFlip.bind(this);
@@ -33,16 +30,7 @@ export default class Card extends React.Component {
 
 	handleOnFlip(flipped) {
     if (flipped) {
-			localStorage.setItem("flipCount", parseInt(localStorage.getItem("flipCount")) + 1)
-
-			if(parseInt(localStorage.getItem("flipCount")) === 1) {
-				console.log(this.props);
-				localStorage.setItem("itemOne", this.props.gameData);
-			}
-
-			if(parseInt(localStorage.getItem("flipCount")) === 2) {
-
-			}
+			let success = this.props.revert(this);
     }
   }
 
@@ -58,6 +46,14 @@ export default class Card extends React.Component {
 		var flipcardProps = {
 			padding: '10px',
 		}
+
+		var gameData = '';
+		if(this.props.rightAns) {
+			gameData = "Right Answer";
+		} else {
+			gameData = this.props.gameData;
+		}
+
 		return (
 			<div class={`class col-md-${this.calcWidth()} col-xs-${this.calcWidth() / 2}`} style={cardProps}>
 				<FlipCard
@@ -65,7 +61,7 @@ export default class Card extends React.Component {
 	          flipped={this.state.isFlipped}
 	          onFlip={this.handleOnFlip}>
 					<div onClick={this.showBack}><button>Click</button></div>
-					<div onClick={this.showFront}>{this.props.gameData}</div>
+					<div onClick={this.showFront}>{gameData}</div>
 				</FlipCard>
 			</div>
 		);
