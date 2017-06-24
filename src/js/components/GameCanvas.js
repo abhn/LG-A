@@ -5,100 +5,144 @@ import getData from './Data';
 import $ from 'jquery';
 
 export default class GameCanvas extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gameData: getData(),
+      currArr: [],
+      numClicks: 0,
+      clickDataArr: [],
+      clickElemArr: []
+    };
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			selectionCount: 0,
-			gameData: getData(),
-			initSelection: null,
-			cardArray: [],
-			currArr: [],
-			correctAns: []
-		}
-		this.onCardClick = this.onCardClick.bind(this);
+    this.makeCanvas = this.makeCanvas.bind(this);
+    this.calcWidth = this.calcWidth.bind(this);
+    this.processData = this.processData.bind(this);
+    this.cardClick = this.cardClick.bind(this);
+    this.isCorrect = this.isCorrect.bind(this);
+  }
 
-		let dataObjs = this.state.gameData;
-		Object.keys(dataObjs).forEach((key, index) => {
+  calcWidth() {
+		return 24 / this.props.tiles;
+	}
+
+  processData() {
+    let currArr = [];
+    Object.keys(this.state.gameData).forEach((key, index) => {
 			if(index <= this.props.tiles) {
-				this.state.correctAns.push(false);
-				this.state.correctAns.push(false);
-				this.state.currArr.push(key);
-				this.state.currArr.push(dataObjs[key]);
-			}
-		});
+        this.state.currArr.push(key);
+				this.state.currArr.push(this.state.gameData[key]);
+      }
+    });
+  }
 
-		for(var i=0; i<this.props.tiles; i++) {
-			this.state.correctAns[i] = false;
-			this.state.cardArray.push(
-				<Card key={i} desktop={this.props.tiles / 2} mobile={this.props.tiles / 4} gameData={this.state.currArr[i]} rightAns={this.state.correctAns[i]} revert={this.onCardClick}/>
-			)
-		}
-	}
-
-	onCardClick(card) {
-		this.state.selectionCount++;
-		if(this.state.selectionCount === 1) {
-			this.state.initSelection = card;
-		}
-		else if(this.state.selectionCount === 2) {
-			// this is awful!
-			if(this.state.gameData[card.props.gameData] === this.state.initSelection.props.gameData ||
-				this.state.gameData[this.state.initSelection.props.gameData] === card.props.gameData) {
-					// correct answer
-
-					let tempCardArr = this.state.cardArray;
-
-					for (let i=0; i<tempCardArr.length; i++) {
-						if(tempCardArr[i].props.gameData === this.state.initSelection.props.gameData) {
-							tempCardArr.splice(i, 1);
-						}
-						if(tempCardArr[i].props.gameData === card.props.gameData) {
-							this.state.correctAns[i] = true;
-							tempCardArr.splice(i, 1);
-						}
-					}
-
-					this.setState({
-						cardArray: tempCardArr
-					});
-
-			} else {
-				// incorrect answer
-				
-			}
-		}
-	}
-
-	render() {
-		var boardProps = {
-			top: '10%',
-			height: '90%'
-		}
-
-		console.log(this.state);
-
-		// this.shuffle(currArr);
-
-// moved to constructor
-		// this.state.cardArray = [];
-		// for(var i=0; i<this.props.tiles; i++) {
-		// 	this.state.cardArray.push(
-		// 		<Card key={i} desktop={this.props.tiles / 2} mobile={this.props.tiles / 4} gameData={this.state.currArr[i]} revert={this.onCardClick}/>
-		// 	)
-		// }
-
-
-		return (
-				<div class="row" style={boardProps}>{this.state.cardArray}</div>
-		);
-	}
-
-	shuffle(a) {
-    for (let i = a.length; i; i--) {
-        let j = Math.floor(Math.random() * i);
-        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+  isCorrect(clickOne, clickTwo) {
+    let gameData = this.state.gameData;
+    if(gameData[clickOne] === clickTwo || gameData[clickTwo] === clickOne) {
+      return true;
+    } else {
+      return false;
     }
-		return a;
-	}
+
+  }
+
+  cardClick(e) {
+    // otherwise e would be nulled out.
+    e.persist();
+
+    let clicks = this.state.numClicks;
+    let clickData = e.target.firstElementChild.innerHTML;
+    let clickDataArr = this.state.clickDataArr;
+    let clickElemArr = this.state.clickElemArr;
+
+    // increment click counter
+    clicks++;
+
+    console.log(clicks)
+    if(clicks === 1) {
+      // store state
+      clickDataArr.push(clickData);
+      clickElemArr.push(e.target);
+      this.setState({
+        numClicks: clicks,
+        clickDataArr: clickDataArr,
+        clickElemArr: clickElemArr
+      });
+    }
+
+    else if(clicks === 2) {
+      console.log(2);
+      // match state info
+      clickDataArr.push(clickData);
+      clickElemArr.push(e.target);
+      if(this.isCorrect(clickDataArr[0], clickDataArr[1])) {
+        // if correct answer
+        console.log('correct answer');
+
+        let elem1 = this.state.clickElemArr[0];
+        let elem2 = this.state.clickElemArr[1];
+
+        elem1.setAttribute("style", "background-color: orange");
+        elem2.setAttribute("style", "background-color: orange");
+        elem1.innerHTML = "";
+        elem2.innerHTML = "";
+
+        // clean off everything
+        this.setState({
+          numClicks: 0,
+          clickDataArr: [],
+          clickElemArr: []
+        })
+      } else {
+        // incorrect answer.
+        this.setState({
+          numClicks: 0,
+          clickDataArr: [],
+          clickElemArr: []
+        });
+      }
+    }
+  }
+
+  makeCanvas() {
+    // math hack incoming!
+    let width = Math.round(100/(Math.floor(this.props.tiles/2))) - 0.1*(Math.round(100/(Math.floor(this.props.tiles/2))));
+    let card = {
+    	width: width + '%',
+    	height: '100px',
+    	background: 'red',
+      margin: '5px'
+    }
+
+    let cardArr = [];
+    this.processData();
+
+    var textProps = {
+      // to make the text unselectable
+      pointerEvents:'none'
+    };
+
+    for(let i=0; i<this.props.tiles; i++) {
+      cardArr.push(
+        <div key={i} class={`col-md-${this.calcWidth()}`} style={card} onClick={this.cardClick}>
+          <h3 style={textProps}>{this.state.currArr[i]}</h3>
+        </div>
+      )
+    }
+    return cardArr;
+  }
+
+
+
+  render() {
+    let canvasProps = {
+      textAlign: 'center',
+      margin: '0 auto'
+    }
+    return (
+      <div class={`row`} style={canvasProps}>
+        {this.makeCanvas()}
+      </div>
+    )
+  }
 }

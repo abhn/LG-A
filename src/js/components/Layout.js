@@ -8,7 +8,7 @@ export default class Layout extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			tiles: "8"
+			tiles: "6"
 		}
 		this.play = this.play.bind(this);
 	}

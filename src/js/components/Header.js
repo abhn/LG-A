@@ -8,18 +8,21 @@ export default class Header extends React.Component {
 			height: '10%',
 		};
 		return (
-			<div style={headerProps}>
-				<div class="form-group">
-				  <label for="selectTiles">Select Tiles</label>
-				  <select class="form input-small" id="selectTiles">
-				    <option value="8">8</option>
-				    <option value="12">12</option>
-						<option value="16">16</option>
-				  </select>
-					<button onClick={this.props.onClick}>Play</button>
+			<div style={headerProps} class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+					  <label for="selectTiles">Select Tiles</label>
+					  <select class="form input-small" id="selectTiles">
+							<option value="6">6</option>
+					    <option value="8">8</option>
+					    <option value="12">12</option>
+					  </select>
+						<button onClick={this.props.onClick}>Play</button>
+					</div>
 				</div>
-				<h3>Time elapsed: </h3>
-				<h3>Moves: </h3>
+				<div class="col-md-6">
+					<h3>Time elapsed: Moves: </h3>
+				</div>
 				<hr/>
 			</div>
 		);
