@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Card from './Card';
 import getData from './Data';
 import $ from 'jquery';
+import FlipCard from 'react-flipcard';
 
 export default class GameCanvas extends React.Component {
   constructor(props) {
@@ -12,7 +12,12 @@ export default class GameCanvas extends React.Component {
       currArr: [],
       numClicks: 0,
       clickDataArr: [],
-      clickElemArr: []
+      clickElemArr: [],
+      turnSound: new Audio('/assets/turn.mp3'),
+      bingoSound: new Audio('/assets/bingo.wav'),
+      masterClickCount: 0,
+      masterRightAnsCount: 0,
+      canvasData: null
     };
 
     this.makeCanvas = this.makeCanvas.bind(this);
@@ -20,6 +25,8 @@ export default class GameCanvas extends React.Component {
     this.processData = this.processData.bind(this);
     this.cardClick = this.cardClick.bind(this);
     this.isCorrect = this.isCorrect.bind(this);
+
+    this.makeCanvas();
   }
 
   calcWidth() {
@@ -27,14 +34,29 @@ export default class GameCanvas extends React.Component {
 	}
 
   processData() {
-    let currArr = [];
+    let tempArr = [];
     Object.keys(this.state.gameData).forEach((key, index) => {
-			if(index <= this.props.tiles) {
-        this.state.currArr.push(key);
-				this.state.currArr.push(this.state.gameData[key]);
+			if(index < this.props.tiles/2) {
+        // this.state.currArr.push(key);
+				// this.state.currArr.push(this.state.gameData[key]);
+        tempArr.push(key);
+        tempArr.push(this.state.gameData[key]);
       }
     });
+    // tempArr = this.state.currArr;
+    console.log(tempArr);
+    tempArr = this.shuffleArray(tempArr);
+    // console.log(tempArr);
+    this.state.currArr = tempArr;
   }
+
+  shuffleArray(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+		return a;
+	}
 
   isCorrect(clickOne, clickTwo) {
     let gameData = this.state.gameData;
@@ -49,16 +71,21 @@ export default class GameCanvas extends React.Component {
   cardClick(e) {
     // otherwise e would be nulled out.
     e.persist();
-
     let clicks = this.state.numClicks;
     let clickData = e.target.firstElementChild.innerHTML;
     let clickDataArr = this.state.clickDataArr;
     let clickElemArr = this.state.clickElemArr;
+    let masterClickCount = this.state.masterClickCount;
+
+    masterClickCount++;
+    this.setState({
+      masterClickCount: masterClickCount
+    });
+    this.props.moves(masterClickCount);
 
     // increment click counter
     clicks++;
 
-    console.log(clicks)
     if(clicks === 1) {
       // store state
       clickDataArr.push(clickData);
@@ -71,21 +98,21 @@ export default class GameCanvas extends React.Component {
     }
 
     else if(clicks === 2) {
-      console.log(2);
       // match state info
       clickDataArr.push(clickData);
       clickElemArr.push(e.target);
       if(this.isCorrect(clickDataArr[0], clickDataArr[1])) {
         // if correct answer
-        console.log('correct answer');
+
+        this.state.bingoSound.play();
 
         let elem1 = this.state.clickElemArr[0];
         let elem2 = this.state.clickElemArr[1];
 
-        elem1.setAttribute("style", "background-color: orange");
-        elem2.setAttribute("style", "background-color: orange");
-        elem1.innerHTML = "";
-        elem2.innerHTML = "";
+        elem1.style["background-color"] = "orange";
+        elem2.style["background-color"] = "orange";
+        elem1.firstElementChild.innerHTML = "Correct";
+        elem2.firstElementChild.innerHTML = "Correct";
 
         // clean off everything
         this.setState({
@@ -93,8 +120,26 @@ export default class GameCanvas extends React.Component {
           clickDataArr: [],
           clickElemArr: []
         })
+
+        // set the master rightanswer count
+        let rightAnsCount = this.state.masterRightAnsCount;
+        rightAnsCount += 2;
+        this.setState({
+          masterRightAnsCount: rightAnsCount
+        });
+
+
+        if(rightAnsCount === parseInt(this.props.tiles)) {
+          this.props.gameOver();
+        }
+
       } else {
         // incorrect answer.
+
+        // play basic turn sound
+        this.state.turnSound.play();
+
+        // reset state
         this.setState({
           numClicks: 0,
           clickDataArr: [],
@@ -106,6 +151,7 @@ export default class GameCanvas extends React.Component {
 
   makeCanvas() {
     // math hack incoming!
+    // dynamically set card width
     let width = Math.round(100/(Math.floor(this.props.tiles/2))) - 0.1*(Math.round(100/(Math.floor(this.props.tiles/2))));
     let card = {
     	width: width + '%',
@@ -129,7 +175,7 @@ export default class GameCanvas extends React.Component {
         </div>
       )
     }
-    return cardArr;
+    this.state.canvasData = cardArr;
   }
 
 
@@ -141,7 +187,7 @@ export default class GameCanvas extends React.Component {
     }
     return (
       <div class={`row`} style={canvasProps}>
-        {this.makeCanvas()}
+        {this.state.canvasData}
       </div>
     )
   }

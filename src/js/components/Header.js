@@ -21,7 +21,8 @@ export default class Header extends React.Component {
 					</div>
 				</div>
 				<div class="col-md-6">
-					<h3>Time elapsed: Moves: </h3>
+					<div>Time elapsed: <span>{this.props.elapsedTime}</span></div>
+					<div>Moves: <span>{this.props.numMoves}</span></div>
 				</div>
 				<hr/>
 			</div>
