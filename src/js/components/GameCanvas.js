@@ -73,6 +73,7 @@ export default class GameCanvas extends React.Component {
     // otherwise e would be nulled out.
     e.persist();
 
+    // check if game has started.
     if(!this.state.gameStarted) {
       alert('Please select Tiles and click Play');
       return;
@@ -174,9 +175,7 @@ export default class GameCanvas extends React.Component {
 
   makeCanvas() {
     // set gameStarted to true
-    this.setState({
-      gameStarted: true
-    })
+    // this.state.gameStarted = true;
     // dynamically set card width
 
     let width = this.props.tiles/2;
@@ -194,21 +193,20 @@ export default class GameCanvas extends React.Component {
     var textProps = {
       // to make the text unselectable
       pointerEvents:'none',
-      display: 'none'
+      display: 'none',
+      fontSize: 'bold'
     };
 
     var textCoverProps = {
       pointerEvents:'none'
     }
 
-    var hiddenDiv = {
-    }
 
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
         <div key={i} class={`pure-u-1-${width}`} style={card} onClick={this.cardClick}>
-          <h3 style={textCoverProps}>Click</h3>
-          <h3 style={textProps}>{this.state.currArr[i]}</h3>
+          <h4 style={textCoverProps}>CLICK TO REVEAL</h4>
+          <h4 style={textProps}>{this.state.currArr[i]}</h4>
         </div>
       )
     }

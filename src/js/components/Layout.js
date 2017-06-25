@@ -22,10 +22,11 @@ export default class Layout extends React.Component {
 		let tiles = $('#selectTiles').val();
 		if(tiles === "SELECT") {
 			// noting selected
-			alert('Please first select the tile count');
+			alert('Please start a new game');
 			return;
 		}
 		this.setState({tiles}, () => {
+			this.gameCanvasInstance.state.gameStarted = true;
 			this.gameCanvasInstance.makeCanvas();
 		});
 		// update GameCanvas with new tiles number
@@ -49,19 +50,51 @@ export default class Layout extends React.Component {
 	}
 
 	gameOver() {
-		clearInterval(this.state.timerHandler)
-		console.log('congrats');
+		// stop timer
+		clearInterval(this.state.timerHandler);
+		// disable more clicks on canvas
+		this.gameCanvasInstance.state.gameStarted = false;
+
+		if(localStorage.getItem("highscore" + this.state.tiles)) {
+			let curr = localStorage.getItem("highscore" + this.state.tiles);
+			if (curr < this.state.numMoves) {
+				localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves);
+				alert('New high score. Yaay!');
+			}
+		} else {
+			localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves);
+			alert('New high score. Yaay!');
+		}
 	}
 
 	render() {
-		const layoutProps = {
+		let layoutProps = {
 			// style for the page
 		};
+
+		let navProps = {
+			background: '#4c4c4c',
+		};
+
+		let linkProps = {
+			color: '#fff'
+		}
+
 		let formattedTime = ("0"+Math.floor(this.state.time/60)).slice(-2) + ":" + ("0"+this.state.time%60).slice(-2);
 		return (
-			<div style={layoutProps} class="container">
-				<Header onClick={this.play} numMoves={this.state.numMoves} elapsedTime={formattedTime}/>
-				<GameCanvas tiles={this.state.tiles} moves={this.moves} gameOver={this.gameOver} ref={gameCanvasInstance => { this.gameCanvasInstance = gameCanvasInstance; }}/>
+			<div>
+				<div class="pure-menu pure-menu-horizontal" style={navProps}>
+			    <a href="#" style={linkProps} class="pure-menu-heading pure-menu-link">Memory Pairs</a>
+			    <ul class="pure-menu-list">
+		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Demo</a></li>
+		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Source</a></li>
+		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Docs</a></li>
+			    </ul>
+				</div>
+				<div style={layoutProps} class="container">
+					<Header onClick={this.play} numMoves={this.state.numMoves} elapsedTime={formattedTime}/>
+					<GameCanvas tiles={this.state.tiles} moves={this.moves} gameOver={this.gameOver} ref={gameCanvasInstance => { this.gameCanvasInstance = gameCanvasInstance; }}/>
+				</div>
 			</div>
 		);
 	}
