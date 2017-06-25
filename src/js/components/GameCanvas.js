@@ -18,11 +18,29 @@ export default class GameCanvas extends React.Component {
       masterClickCount: 0,
       masterRightAnsCount: 0,
       canvasData: null,
-      gameStarted: false
+      gameStarted: false,
+      card: {
+      	height: '100px',
+      	background: '#333',
+        color: '#fff',
+        border: '2px white solid'
+      },
+      textProps: {
+        // to make the text unselectable
+        pointerEvents:'none',
+        display: 'none',
+        fontSize: 'bold'
+      },
+      textCoverProps: {
+        pointerEvents:'none'
+      },
+      canvasProps: {
+        textAlign: 'center',
+        margin: '0 auto'
+      }
     };
 
     this.makeCanvas = this.makeCanvas.bind(this);
-    this.calcWidth = this.calcWidth.bind(this);
     this.processData = this.processData.bind(this);
     this.cardClick = this.cardClick.bind(this);
     this.isCorrect = this.isCorrect.bind(this);
@@ -38,16 +56,11 @@ export default class GameCanvas extends React.Component {
     let tempArr = [];
     Object.keys(this.state.gameData).forEach((key, index) => {
 			if(index < this.props.tiles/2) {
-        // this.state.currArr.push(key);
-				// this.state.currArr.push(this.state.gameData[key]);
         tempArr.push(key);
         tempArr.push(this.state.gameData[key]);
       }
     });
-    // tempArr = this.state.currArr;
-    console.log(tempArr);
     tempArr = this.shuffleArray(tempArr);
-    // console.log(tempArr);
     this.state.currArr = tempArr;
   }
 
@@ -66,7 +79,6 @@ export default class GameCanvas extends React.Component {
     } else {
       return false;
     }
-
   }
 
   cardClick(e) {
@@ -179,49 +191,24 @@ export default class GameCanvas extends React.Component {
     // dynamically set card width
 
     let width = this.props.tiles/2;
-    let card = {
-    	// width: width + '%',
-    	height: '100px',
-    	background: '#333',
-      color: '#fff',
-      border: '2px white solid'
-    }
 
     let cardArr = [];
     this.processData();
 
-    var textProps = {
-      // to make the text unselectable
-      pointerEvents:'none',
-      display: 'none',
-      fontSize: 'bold'
-    };
-
-    var textCoverProps = {
-      pointerEvents:'none'
-    }
-
-
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
-        <div key={i} class={`pure-u-1-${width}`} style={card} onClick={this.cardClick}>
-          <h4 style={textCoverProps}>CLICK TO REVEAL</h4>
-          <h4 style={textProps}>{this.state.currArr[i]}</h4>
+        <div key={i} class={`pure-u-1-${width}`} style={this.state.card} onClick={this.cardClick}>
+          <h4 style={this.state.textCoverProps}>CLICK TO REVEAL</h4>
+          <h4 style={this.state.textProps}>{this.state.currArr[i]}</h4>
         </div>
       )
     }
     this.state.canvasData = cardArr;
   }
 
-
-
   render() {
-    let canvasProps = {
-      textAlign: 'center',
-      margin: '0 auto'
-    }
     return (
-      <div class={`pure-g`} style={canvasProps}>
+      <div class={`pure-g`} style={this.state.canvasProps}>
         {this.state.canvasData}
       </div>
     )

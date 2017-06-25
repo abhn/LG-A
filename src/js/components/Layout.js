@@ -11,7 +11,17 @@ export default class Layout extends React.Component {
 			tiles: "6",
 			numMoves: 0,
 			time: 0,
-			timerHandler: null
+			timerHandler: null,
+			layoutProps: {
+				// style for the page
+			},
+			navProps: {
+				background: '#4c4c4c',
+			},
+			linkProps: {
+				color: '#fff'
+			}
+
 		}
 		this.play = this.play.bind(this);
 		this.moves = this.moves.bind(this);
@@ -68,30 +78,19 @@ export default class Layout extends React.Component {
 	}
 
 	render() {
-		let layoutProps = {
-			// style for the page
-		};
-
-		let navProps = {
-			background: '#4c4c4c',
-		};
-
-		let linkProps = {
-			color: '#fff'
-		}
 
 		let formattedTime = ("0"+Math.floor(this.state.time/60)).slice(-2) + ":" + ("0"+this.state.time%60).slice(-2);
 		return (
 			<div>
-				<div class="pure-menu pure-menu-horizontal" style={navProps}>
-			    <a href="#" style={linkProps} class="pure-menu-heading pure-menu-link">Memory Pairs</a>
+				<div class="pure-menu pure-menu-horizontal" style={this.state.navProps}>
+			    <a href="#" style={this.state.linkProps} class="pure-menu-heading pure-menu-link">Memory Pairs</a>
 			    <ul class="pure-menu-list">
-		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Demo</a></li>
-		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Source</a></li>
-		        <li class="pure-menu-item"><a href="#" style={linkProps} class="pure-menu-link">Docs</a></li>
+		        <li class="pure-menu-item"><a href="#" style={this.state.linkProps} class="pure-menu-link">Demo</a></li>
+		        <li class="pure-menu-item"><a href="#" style={this.state.linkProps} class="pure-menu-link">Source</a></li>
+		        <li class="pure-menu-item"><a href="#" style={this.state.linkProps} class="pure-menu-link">Docs</a></li>
 			    </ul>
 				</div>
-				<div style={layoutProps} class="container">
+				<div style={this.state.layoutProps} class="container">
 					<Header onClick={this.play} numMoves={this.state.numMoves} elapsedTime={formattedTime}/>
 					<GameCanvas tiles={this.state.tiles} moves={this.moves} gameOver={this.gameOver} ref={gameCanvasInstance => { this.gameCanvasInstance = gameCanvasInstance; }}/>
 				</div>
