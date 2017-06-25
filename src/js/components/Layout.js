@@ -36,6 +36,8 @@ export default class Layout extends React.Component {
 			return;
 		}
 		this.setState({tiles}, () => {
+			// this.gameCanvasInstance.state = {}
+			// this.gameCanvasInstance.forceUpdate();
 			this.gameCanvasInstance.state.gameStarted = true;
 			this.gameCanvasInstance.makeCanvas();
 		});
@@ -53,7 +55,6 @@ export default class Layout extends React.Component {
 	}
 
 	moves(val) {
-		console.log(val);
 		this.setState({
 			numMoves: val
 		});
@@ -83,7 +84,7 @@ export default class Layout extends React.Component {
 		return (
 			<div>
 				<div class="pure-menu pure-menu-horizontal" style={this.state.navProps}>
-			    <a href="#" style={this.state.linkProps} class="pure-menu-heading pure-menu-link">Memory Pairs</a>
+			    <a href="#" style={this.state.linkProps} class="pure-menu-heading pure-menu-link"><b>Memory Pairs</b></a>
 			    <ul class="pure-menu-list">
 		        <li class="pure-menu-item"><a href="#" style={this.state.linkProps} class="pure-menu-link">Demo</a></li>
 		        <li class="pure-menu-item"><a href="#" style={this.state.linkProps} class="pure-menu-link">Source</a></li>

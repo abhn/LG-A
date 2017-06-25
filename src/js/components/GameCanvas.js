@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import getData from './Data';
 import $ from 'jquery';
-import FlipCard from 'react-flipcard';
 
 export default class GameCanvas extends React.Component {
   constructor(props) {
@@ -13,14 +12,14 @@ export default class GameCanvas extends React.Component {
       numClicks: 0,
       clickDataArr: [],
       clickElemArr: [],
-      turnSound: new Audio('/assets/turn.mp3'),
-      bingoSound: new Audio('/assets/bingo.wav'),
+      turnSound: new Audio('./assets/turn.mp3'),
+      bingoSound: new Audio('./assets/bingo.wav'),
       masterClickCount: 0,
       masterRightAnsCount: 0,
       canvasData: null,
       gameStarted: false,
       card: {
-      	height: '100px',
+      	height: '125px',
       	background: '#333',
         color: '#fff',
         border: '2px white solid'
@@ -29,10 +28,22 @@ export default class GameCanvas extends React.Component {
         // to make the text unselectable
         pointerEvents:'none',
         display: 'none',
-        fontSize: 'bold'
+        fontSize: 'bold',
+        // textAlign: 'center',
+        // verticalAlign: 'middle',
+        // lineHeight: '100px',
+        position: 'relative',
+        top: '40%',
+        transform: 'translateY(-50%)'
       },
       textCoverProps: {
-        pointerEvents:'none'
+        pointerEvents:'none',
+        // textAlign: 'center',
+        // verticalAlign: 'middle',
+        // lineHeight: '100px',
+        position: 'relative',
+        top: '40%',
+        transform: 'translateY(-25%)'
       },
       canvasProps: {
         textAlign: 'center',
@@ -92,6 +103,10 @@ export default class GameCanvas extends React.Component {
     }
 
     let clicks = this.state.numClicks;
+    if(!e.target.lastElementChild) {
+      // null tile
+      return;
+    }
     let clickData = e.target.lastElementChild.innerText;
     let clickDataArr = this.state.clickDataArr;
     let clickElemArr = this.state.clickElemArr;
@@ -136,10 +151,13 @@ export default class GameCanvas extends React.Component {
 
         setTimeout(() => {
           // make them invisible
-          clickElemArr[0].style["background-color"] = "#d3eda3";
-          clickElemArr[1].style["background-color"] = "#d3eda3";
-          clickElemArr[0].style["color"] = "#72962e";
-          clickElemArr[1].style["color"] = "#72962e";
+          clickElemArr[0].style["background-color"] = "#fff";
+          clickElemArr[1].style["background-color"] = "#fff";
+
+          clickElemArr[0].innerHTML = '';
+          clickElemArr[1].innerHTML = '';
+
+
         }, 1000);
 
         // clean off everything
@@ -186,8 +204,6 @@ export default class GameCanvas extends React.Component {
   }
 
   makeCanvas() {
-    // set gameStarted to true
-    // this.state.gameStarted = true;
     // dynamically set card width
 
     let width = this.props.tiles/2;
@@ -198,7 +214,7 @@ export default class GameCanvas extends React.Component {
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
         <div key={i} class={`pure-u-1-${width}`} style={this.state.card} onClick={this.cardClick}>
-          <h4 style={this.state.textCoverProps}>CLICK TO REVEAL</h4>
+          <h4 style={this.state.textCoverProps}>Click To Reveal</h4>
           <h4 style={this.state.textProps}>{this.state.currArr[i]}</h4>
         </div>
       )

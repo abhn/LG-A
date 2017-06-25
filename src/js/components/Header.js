@@ -6,7 +6,7 @@ export default class Header extends React.Component {
 		this.state = {
 			headerProps: {
 				padding: '20px',
-				height: '150px'
+				height: '200px'
 			},
 			boldText: {
 				fontWeight: 'bold',
@@ -32,6 +32,8 @@ export default class Header extends React.Component {
 				color: 'white',
 			}
 		}
+
+		this.resetHighscore = this.resetHighscore.bind(this);
 	}
 
 	reset() {
@@ -69,9 +71,9 @@ export default class Header extends React.Component {
 						</div>
 					</div>
 					<div style={{textAlign: 'center'}} class="pure-u-1-3">
-						<p style={this.state.largeText}>GAME STATS</p>
-						<p style={this.state.boldText}>TIME ELAPSED &#8594; <span style={this.state.largeText}>{this.props.elapsedTime}</span></p>
-						<p style={this.state.boldText}>MOVE COUNT &#8594; <span style={this.state.largeText}>{this.props.numMoves}</span></p>
+						<p style={{fontSize: '2em', fontWeight: 'bold'}}>GAME STATS</p>
+						<span style={this.state.largeText}>TIME ELAPSED &#8594; {this.props.elapsedTime}</span><br/>
+						<span style={this.state.largeText}>MOVE COUNT &#8594; {this.props.numMoves}</span>
 					</div>
 					<div style={{textAlign: 'center'}} class="pure-u-1-3">
 						<p style={this.state.largeText}>LEADERBOARD</p>
