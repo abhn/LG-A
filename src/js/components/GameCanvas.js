@@ -17,7 +17,8 @@ export default class GameCanvas extends React.Component {
       bingoSound: new Audio('/assets/bingo.wav'),
       masterClickCount: 0,
       masterRightAnsCount: 0,
-      canvasData: null
+      canvasData: null,
+      gameStarted: false
     };
 
     this.makeCanvas = this.makeCanvas.bind(this);
@@ -71,8 +72,14 @@ export default class GameCanvas extends React.Component {
   cardClick(e) {
     // otherwise e would be nulled out.
     e.persist();
+
+    if(!this.state.gameStarted) {
+      alert('Please select Tiles and click Play');
+      return;
+    }
+
     let clicks = this.state.numClicks;
-    let clickData = e.target.firstElementChild.innerHTML;
+    let clickData = e.target.lastElementChild.innerText;
     let clickDataArr = this.state.clickDataArr;
     let clickElemArr = this.state.clickElemArr;
     let masterClickCount = this.state.masterClickCount;
@@ -90,6 +97,10 @@ export default class GameCanvas extends React.Component {
       // store state
       clickDataArr.push(clickData);
       clickElemArr.push(e.target);
+
+      $(clickElemArr[0].firstElementChild).hide();
+      $(clickElemArr[0].lastElementChild).fadeIn("slow");
+
       this.setState({
         numClicks: clicks,
         clickDataArr: clickDataArr,
@@ -101,18 +112,22 @@ export default class GameCanvas extends React.Component {
       // match state info
       clickDataArr.push(clickData);
       clickElemArr.push(e.target);
-      if(this.isCorrect(clickDataArr[0], clickDataArr[1])) {
+
+      $(clickElemArr[1].firstElementChild).hide();
+      $(clickElemArr[1].lastElementChild).fadeIn("slow");
+
+      if(this.isCorrect(clickDataArr[0].trim(), clickDataArr[1].trim())) {
         // if correct answer
 
         this.state.bingoSound.play();
 
-        let elem1 = this.state.clickElemArr[0];
-        let elem2 = this.state.clickElemArr[1];
-
-        elem1.style["background-color"] = "orange";
-        elem2.style["background-color"] = "orange";
-        elem1.firstElementChild.innerHTML = "Correct";
-        elem2.firstElementChild.innerHTML = "Correct";
+        setTimeout(() => {
+          // make them invisible
+          clickElemArr[0].style["background-color"] = "#d3eda3";
+          clickElemArr[1].style["background-color"] = "#d3eda3";
+          clickElemArr[0].style["color"] = "#72962e";
+          clickElemArr[1].style["color"] = "#72962e";
+        }, 1000);
 
         // clean off everything
         this.setState({
@@ -139,6 +154,14 @@ export default class GameCanvas extends React.Component {
         // play basic turn sound
         this.state.turnSound.play();
 
+        setTimeout(() => {
+          // revert to hidden state
+          $(clickElemArr[0].lastElementChild).hide("slow");
+          $(clickElemArr[0].firstElementChild).fadeIn("slow");
+          $(clickElemArr[1].lastElementChild).hide("slow");
+          $(clickElemArr[1].firstElementChild).fadeIn("show");
+        }, 500);
+
         // reset state
         this.setState({
           numClicks: 0,
@@ -150,14 +173,19 @@ export default class GameCanvas extends React.Component {
   }
 
   makeCanvas() {
-    // math hack incoming!
+    // set gameStarted to true
+    this.setState({
+      gameStarted: true
+    })
     // dynamically set card width
-    let width = Math.round(100/(Math.floor(this.props.tiles/2))) - 0.1*(Math.round(100/(Math.floor(this.props.tiles/2))));
+
+    let width = this.props.tiles/2;
     let card = {
-    	width: width + '%',
+    	// width: width + '%',
     	height: '100px',
-    	background: 'red',
-      margin: '5px'
+    	background: '#333',
+      color: '#fff',
+      border: '2px white solid'
     }
 
     let cardArr = [];
@@ -165,12 +193,21 @@ export default class GameCanvas extends React.Component {
 
     var textProps = {
       // to make the text unselectable
-      pointerEvents:'none'
+      pointerEvents:'none',
+      display: 'none'
     };
+
+    var textCoverProps = {
+      pointerEvents:'none'
+    }
+
+    var hiddenDiv = {
+    }
 
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
-        <div key={i} class={`col-md-${this.calcWidth()}`} style={card} onClick={this.cardClick}>
+        <div key={i} class={`pure-u-1-${width}`} style={card} onClick={this.cardClick}>
+          <h3 style={textCoverProps}>Click</h3>
           <h3 style={textProps}>{this.state.currArr[i]}</h3>
         </div>
       )
@@ -186,7 +223,7 @@ export default class GameCanvas extends React.Component {
       margin: '0 auto'
     }
     return (
-      <div class={`row`} style={canvasProps}>
+      <div class={`pure-g`} style={canvasProps}>
         {this.state.canvasData}
       </div>
     )

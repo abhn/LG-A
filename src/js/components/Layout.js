@@ -20,11 +20,18 @@ export default class Layout extends React.Component {
 
 	play() {
 		let tiles = $('#selectTiles').val();
+		if(tiles === "SELECT") {
+			// noting selected
+			alert('Please first select the tile count');
+			return;
+		}
 		this.setState({tiles}, () => {
 			this.gameCanvasInstance.makeCanvas();
 		});
 		// update GameCanvas with new tiles number
 
+		// clear existing instance of timer
+		clearInterval(this.state.timerHandler)
 		this.state.timerHandler = setInterval(() => {
 			let time = this.state.time;
 			time++;
@@ -48,7 +55,7 @@ export default class Layout extends React.Component {
 
 	render() {
 		const layoutProps = {
-			backgroundColor: 'orange',
+			// style for the page
 		};
 		let formattedTime = ("0"+Math.floor(this.state.time/60)).slice(-2) + ":" + ("0"+this.state.time%60).slice(-2);
 		return (
