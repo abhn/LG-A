@@ -30,7 +30,7 @@ export default class Header extends React.Component {
 			purpButton: {
 				background: '#8c69ad',
 				color: 'white',
-			}
+			},
 		}
 
 		this.resetHighscore = this.resetHighscore.bind(this);
@@ -48,8 +48,14 @@ export default class Header extends React.Component {
 	}
 
 	render() {
-
-
+		let newGameBtn;
+		console.log(this.props.elapsedTime)
+		if(this.props.elapsedTime !== "00:00") {
+			newGameBtn = "pure-button pure-button-disabled";
+		}
+		else {
+			newGameBtn = "pure-button";
+		}
 		return (
 				<div style={this.state.headerProps} class="pure-g">
 					<div style={{textAlign: 'center'}} class="pure-u-1-3">
@@ -63,7 +69,7 @@ export default class Header extends React.Component {
 						    <option value="12">12</option>
 						  </select>
 							&nbsp;&#8594;&nbsp;
-							<button class="pure-button" style={this.state.buttonStyle, this.state.primButton} onClick={this.props.onClick}>START GAME</button>
+							<button class={newGameBtn} style={this.state.buttonStyle, this.state.primButton} onClick={this.props.onClick}>START GAME</button>
 							<hr/>
 							<button class="pure-button" style={this.state.buttonStyle, this.state.warnButton} onClick={this.reset}>RESET</button>
 							&nbsp;

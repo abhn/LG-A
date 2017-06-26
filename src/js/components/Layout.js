@@ -68,12 +68,12 @@ export default class Layout extends React.Component {
 
 		if(localStorage.getItem("highscore" + this.state.tiles)) {
 			let curr = localStorage.getItem("highscore" + this.state.tiles);
-			if (curr < this.state.numMoves) {
-				localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves);
+			if (curr > this.state.numMoves) {
+				localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves + 1);
 				alert('New high score. Yaay!');
 			}
 		} else {
-			localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves);
+			localStorage.setItem("highscore" + this.state.tiles, this.state.numMoves + 1);
 			alert('New high score. Yaay!');
 		}
 	}
