@@ -85,14 +85,14 @@ export default class Header extends React.Component {
 						<p style={this.state.largeText}>LEADERBOARD</p>
 						<div class="pure-g">
 							<div class="pure-u-1-2">
-								<p style={this.state.boldText}>6 MOVES &#8594; {localStorage.getItem("highscore6") ? localStorage.getItem("highscore6") : 0} MOVES</p>
-								<p style={this.state.boldText}>10 MOVES &#8594; {localStorage.getItem("highscore10") ? localStorage.getItem("highscore8") : 0} MOVES</p>
+								<p style={this.state.boldText}>6 TILES &#8594; {localStorage.getItem("highscore6") ? localStorage.getItem("highscore6") : 0} MOVES</p>
+								<p style={this.state.boldText}>10 TILES &#8594; {localStorage.getItem("highscore10") ? localStorage.getItem("highscore8") : 0} MOVES</p>
 
 							</div>
 							<div class="pure-u-1-2">
-								<p style={this.state.boldText}>8 MOVES &#8594; {localStorage.getItem("highscore8") ? localStorage.getItem("highscore8") : 0} MOVES</p>
+								<p style={this.state.boldText}>8 TILES &#8594; {localStorage.getItem("highscore8") ? localStorage.getItem("highscore8") : 0} MOVES</p>
 
-								<p style={this.state.boldText}>12 MOVES &#8594; {localStorage.getItem("highscore12") ? localStorage.getItem("highscore8") : 0} MOVES</p>
+								<p style={this.state.boldText}>12 TILES &#8594; {localStorage.getItem("highscore12") ? localStorage.getItem("highscore8") : 0} MOVES</p>
 							</div>
 						</div>
 
