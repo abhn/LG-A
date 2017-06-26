@@ -22,7 +22,10 @@ export default class GameCanvas extends React.Component {
       	height: '125px',
       	background: '#333',
         color: '#fff',
-        border: '2px white solid'
+        border: '2px white solid',
+        MozBorderRadius: '6px',
+        borderRadius: '10px',
+        WebkitBorderRadius: '10px'
       },
       textProps: {
         // to make the text unselectable
@@ -242,7 +245,7 @@ export default class GameCanvas extends React.Component {
   }
 
   /*
-   * Render the card array 
+   * Render the card array
    */
   render() {
     return (

@@ -78,21 +78,21 @@ export default class Header extends React.Component {
 								<option value="10">10</option>
 						    <option value="12">12</option>
 						  </select>
-							&nbsp;&#8594;&nbsp;
+							<span>&nbsp;&#8594;&nbsp;</span>
 							<button class={newGameBtn} style={this.state.buttonStyle, this.state.primButton} onClick={this.props.onClick}>START GAME</button>
 							<hr/>
 							<button class="pure-button" style={this.state.buttonStyle, this.state.warnButton} onClick={this.reset}>NEW GAME</button>
 							&nbsp;
-							<button class="pure-button" style={this.state.buttonStyle, this.state.purpButton} onClick={this.resetHighscore}>CLEAR LEADERBOARD</button>
+							<button class="pure-button" style={this.state.buttonStyle, this.state.purpButton} onClick={this.resetHighscore}>CLEAR HIGH SCORES</button>
 						</div>
 					</div>
 					<div style={{textAlign: 'center'}} class="pure-u-1-3">
-						<p style={{fontSize: '2em', fontWeight: 'bold'}}>GAME STATS</p>
-						<span style={this.state.largeText}>TIME ELAPSED &#8594; {this.props.elapsedTime}</span><br/>
-						<span style={this.state.largeText}>MOVE COUNT &#8594; {this.props.numMoves}</span>
+						<p style={{fontSize: '2em', fontWeight: 'bold'}}>STATS</p>
+						<span style={this.state.largeText}>TIME &#8594; {this.props.elapsedTime}</span><br/>
+						<span style={this.state.largeText}>MOVES &#8594; {this.props.numMoves}</span>
 					</div>
 					<div style={{textAlign: 'center'}} class="pure-u-1-3">
-						<p style={this.state.largeText}>LEADERBOARD</p>
+						<p style={{fontSize: '2em', fontWeight: 'bold'}}>HIGH SCORES</p>
 						<div class="pure-g">
 							<div class="pure-u-1-2">
 								<p style={this.state.boldText}>6 TILES &#8594; {localStorage.getItem("highscore6") ? localStorage.getItem("highscore6") : 0} MOVES</p>
