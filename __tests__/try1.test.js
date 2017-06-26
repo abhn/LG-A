@@ -1,17 +1,13 @@
-// import React from 'react';
-import GameCanvas from '../src/js/GameCanvas';
-// import renderer from 'react-test-renderer';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import GameCanvas from '../src/js/components/GameCanvas';
+import { shallow } from 'enzyme';
 
-// describe('Welcome (Snapshot)', () => {
-//   it('Welcome renders hello world', () => {
-//     const component = renderer.create(<GameCanvas/>);
-//     const json = component.toJSON();
-//     expect(json).toMatchSnapshot();
-//   });
-// });
+describe('GameCanvas', () => {
+    it('renders without crashing', () => {
+        const div = document.createElement('div');
+        ReactDOM.render(<GameCanvas />, div);
+    });
 
-describe('Addition', () => {
-  it('knows that 2 and 2 make 4', () => {
-    expect(2 + 2).toBe(4);
-  });
+
 });
