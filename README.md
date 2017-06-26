@@ -11,9 +11,9 @@ Memory pairs is a memory game for kids to improve their memory and general knowl
 [https://www.nagekar.com/LG-A](https://www.nagekar.com/LG-A)
 
 ##### Screenshot: 6 tile layout (Game not started)
-![6 tile](https://raw.githubusercontent.com/abhn/LG-A/master/static/sixtile.png)
+![6 tile](https://github.com/abhn/LG-A/raw/master/static/sixtile.png)
 ##### Screenshot: 12 tile layout (Game in progress)
-![12 tile](https://raw.githubusercontent.com/abhn/LG-A/master/static/twelvetile.png)
+![12 tile](https://github.com/abhn/LG-A/raw/master/static/twelvetile.png)
 
 ### Prerequisites
 - Node (v6+)
