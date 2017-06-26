@@ -31,6 +31,10 @@ export default class Layout extends React.Component {
 		this.gameOver = this.gameOver.bind(this);
 	}
 
+	/*
+   * listener for "Start Game" button.
+	 * Sets number of tiles and calls GameCanvas.makeCanvas()
+   */
 	play() {
 		let tiles = $('#selectTiles').val();
 		if(tiles === "SELECT") {
@@ -46,7 +50,7 @@ export default class Layout extends React.Component {
 		});
 		// update GameCanvas with new tiles number
 
-		// clear existing instance of timer
+		// clear existing instance of timer, although that should never happen
 		clearInterval(this.state.timerHandler)
 		this.state.timerHandler = setInterval(() => {
 			let time = this.state.time;
@@ -57,12 +61,18 @@ export default class Layout extends React.Component {
 		}, 1000);
 	}
 
+	/*
+   * keep track of the master move count
+   */
 	moves(val) {
 		this.setState({
 			numMoves: val
 		});
 	}
 
+	/*
+   * gameOver() keeps track of highscores and stops timer 
+   */
 	gameOver() {
 		// stop timer
 		clearInterval(this.state.timerHandler);

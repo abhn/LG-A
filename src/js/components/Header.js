@@ -3,6 +3,7 @@ import React from 'react';
 export default class Header extends React.Component {
 	constructor() {
 		super();
+		// React's way to add CSS in state
 		this.state = {
 			headerProps: {
 				paddingTop: '20px',
@@ -37,10 +38,15 @@ export default class Header extends React.Component {
 		this.resetHighscore = this.resetHighscore.bind(this);
 	}
 
+	/*
+   * Reset the game. This will reload the page.
+   */
 	reset() {
 		location.reload();
 	}
 
+	// highscores are recorded in localStorage.
+	// clearing localStorage will clear highscores
 	resetHighscore() {
 		localStorage.clear();
 		// forcing update because the state
@@ -48,7 +54,9 @@ export default class Header extends React.Component {
 		this.forceUpdate();
 	}
 
-
+	/*
+	 * Nothing fancy here. Start Game button gets disabled once game starts
+	 */
 	render() {
 		// disable newgame button once game starts
 		let newGameBtn;

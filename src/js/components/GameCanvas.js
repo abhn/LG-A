@@ -53,6 +53,9 @@ export default class GameCanvas extends React.Component {
     this.makeCanvas();
   }
 
+  /*
+   * populates this.state.currArr with data (questions and answers)
+   */
   processData() {
     let tempArr = [];
     Object.keys(this.state.gameData).forEach((key, index) => {
@@ -66,6 +69,11 @@ export default class GameCanvas extends React.Component {
     this.state.currArr = tempArr;
   }
 
+  /*
+   * Used by processData() to shuffle card data array
+   * Input: array
+   * Output: Shuffled array
+   */
   shuffleArray(a) {
     for (let i = a.length; i; i--) {
         let j = Math.floor(Math.random() * i);
@@ -74,8 +82,13 @@ export default class GameCanvas extends React.Component {
 		return a;
 	}
 
+  /*
+   * Evaluate if the two consecutive clicked cards are on question/answer pair
+   */
   isCorrect(clickOne, clickTwo) {
     let gameData = this.state.gameData;
+
+    // because the order of selection is irrelevant
     if(gameData[clickOne] === clickTwo || gameData[clickTwo] === clickOne) {
       return true;
     } else {
@@ -83,6 +96,10 @@ export default class GameCanvas extends React.Component {
     }
   }
 
+  /*
+   * Receives the 'Card' click event. Stores state
+   * Depending on result, either discards Cards or rehides them
+   */
   cardClick(e) {
     // otherwise e would be nulled out.
     e.persist();
@@ -98,18 +115,21 @@ export default class GameCanvas extends React.Component {
       // null tile
       return;
     }
+
+    // first get all data required to evaluate click
     let clickData = e.target.lastElementChild.innerText;
     let clickDataArr = this.state.clickDataArr;
     let clickElemArr = this.state.clickElemArr;
     let masterClickCount = this.state.masterClickCount;
 
+    // increment master click count
     masterClickCount++;
     this.setState({
       masterClickCount: masterClickCount
     });
     this.props.moves(masterClickCount);
 
-    // increment click counter
+    // increment turn click counter
     clicks++;
 
     if(clicks === 1) {
@@ -117,6 +137,7 @@ export default class GameCanvas extends React.Component {
       clickDataArr.push(clickData);
       clickElemArr.push(e.target);
 
+      // keep the clicked card visible
       $(clickElemArr[0].firstElementChild).hide();
       $(clickElemArr[0].lastElementChild).fadeIn("slow");
 
@@ -132,22 +153,23 @@ export default class GameCanvas extends React.Component {
       clickDataArr.push(clickData);
       clickElemArr.push(e.target);
 
+      // make the second card visible
       $(clickElemArr[1].firstElementChild).hide();
       $(clickElemArr[1].lastElementChild).fadeIn("slow");
 
       if(this.isCorrect(clickDataArr[0].trim(), clickDataArr[1].trim())) {
         // if correct answer
 
+        // right answer. play bingo
         this.state.bingoSound.play();
 
         setTimeout(() => {
-          // make them invisible
+          // make them invisible after a second
           clickElemArr[0].style["background-color"] = "#fff";
           clickElemArr[1].style["background-color"] = "#fff";
 
           clickElemArr[0].innerHTML = '';
           clickElemArr[1].innerHTML = '';
-
 
         }, 1000);
 
@@ -159,13 +181,14 @@ export default class GameCanvas extends React.Component {
         })
 
         // set the master rightanswer count
+        // required for highscores and detecting end of game
         let rightAnsCount = this.state.masterRightAnsCount;
         rightAnsCount += 2;
         this.setState({
           masterRightAnsCount: rightAnsCount
         });
 
-
+        // if all cards are discarded
         if(rightAnsCount === parseInt(this.props.tiles)) {
           this.props.gameOver();
         }
@@ -194,16 +217,19 @@ export default class GameCanvas extends React.Component {
     }
   }
 
-
+  /*
+   *  Create canvas. Called by "Start Game" button
+   */
   makeCanvas() {
     // dynamically set card width
 
+    // because two rows
     let width = this.props.tiles/2;
 
     let cardArr = [];
     this.processData();
 
-
+    // create the cards array to be rendered
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
         <div key={i} class={`pure-u-1-${width}`} style={this.state.card} onClick={this.cardClick}>
@@ -215,6 +241,9 @@ export default class GameCanvas extends React.Component {
     this.state.canvasData = cardArr;
   }
 
+  /*
+   * Render the card array 
+   */
   render() {
     return (
       <div class={`pure-g`} style={this.state.canvasProps}>
