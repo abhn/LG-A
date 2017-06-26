@@ -29,18 +29,12 @@ export default class GameCanvas extends React.Component {
         pointerEvents:'none',
         display: 'none',
         fontSize: 'bold',
-        // textAlign: 'center',
-        // verticalAlign: 'middle',
-        // lineHeight: '100px',
         position: 'relative',
         top: '40%',
         transform: 'translateY(-50%)'
       },
       textCoverProps: {
         pointerEvents:'none',
-        // textAlign: 'center',
-        // verticalAlign: 'middle',
-        // lineHeight: '100px',
         position: 'relative',
         top: '40%',
         transform: 'translateY(-25%)'
@@ -71,6 +65,7 @@ export default class GameCanvas extends React.Component {
         tempArr.push(this.state.gameData[key]);
       }
     });
+
     tempArr = this.shuffleArray(tempArr);
     this.state.currArr = tempArr;
   }
@@ -203,6 +198,7 @@ export default class GameCanvas extends React.Component {
     }
   }
 
+
   makeCanvas() {
     // dynamically set card width
 
@@ -210,6 +206,7 @@ export default class GameCanvas extends React.Component {
 
     let cardArr = [];
     this.processData();
+
 
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(

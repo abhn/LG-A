@@ -5,7 +5,8 @@ export default class Header extends React.Component {
 		super();
 		this.state = {
 			headerProps: {
-				padding: '20px',
+				paddingTop: '20px',
+				paddingBottom: '20px',
 				height: '200px'
 			},
 			boldText: {
@@ -47,9 +48,10 @@ export default class Header extends React.Component {
 		this.forceUpdate();
 	}
 
+
 	render() {
+		// disable newgame button once game starts
 		let newGameBtn;
-		console.log(this.props.elapsedTime)
 		if(this.props.elapsedTime !== "00:00") {
 			newGameBtn = "pure-button pure-button-disabled";
 		}
@@ -71,7 +73,7 @@ export default class Header extends React.Component {
 							&nbsp;&#8594;&nbsp;
 							<button class={newGameBtn} style={this.state.buttonStyle, this.state.primButton} onClick={this.props.onClick}>START GAME</button>
 							<hr/>
-							<button class="pure-button" style={this.state.buttonStyle, this.state.warnButton} onClick={this.reset}>RESET</button>
+							<button class="pure-button" style={this.state.buttonStyle, this.state.warnButton} onClick={this.reset}>NEW GAME</button>
 							&nbsp;
 							<button class="pure-button" style={this.state.buttonStyle, this.state.purpButton} onClick={this.resetHighscore}>CLEAR LEADERBOARD</button>
 						</div>

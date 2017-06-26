@@ -13,15 +13,18 @@ export default class Layout extends React.Component {
 			time: 0,
 			timerHandler: null,
 			layoutProps: {
-				// style for the page
+				width: '1170px',
+				paddingRight: '15px',
+		    paddingLeft: '15px',
+		    marginRight: 'auto',
+		    marginLeft: 'auto',
 			},
 			navProps: {
-				background: '#4c4c4c',
+				// background: '#4c4c4c',
 			},
 			linkProps: {
-				color: '#fff'
-			}
-
+				// color: '#fff'
+			},
 		}
 		this.play = this.play.bind(this);
 		this.moves = this.moves.bind(this);
@@ -91,8 +94,8 @@ export default class Layout extends React.Component {
 		        <li class="pure-menu-item"><a href="https://github.com/abhn/LG-A/blob/master/README.md" style={this.state.linkProps} class="pure-menu-link">Docs</a></li>
 			    </ul>
 				</div>
-				<div style={this.state.layoutProps} class="container">
-					<Header onClick={this.play} numMoves={this.state.numMoves} elapsedTime={formattedTime}/>
+				<div style={this.state.layoutProps}>
+					<Header onClick={this.play} numMoves={this.state.numMoves} elapsedTime={formattedTime} giveUp={this.giveUp}/>
 					<GameCanvas tiles={this.state.tiles} moves={this.moves} gameOver={this.gameOver} ref={gameCanvasInstance => { this.gameCanvasInstance = gameCanvasInstance; }}/>
 				</div>
 			</div>
