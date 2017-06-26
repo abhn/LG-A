@@ -8,7 +8,7 @@ Memory pairs is a memory game for kids to improve their memory and general knowl
 - The objective is to remember the previously flipped cards and discard all cards in minimum number of moves.
 
 ### Demo
-[https://l-a.me/lg-a/](https://www.nagekar.com/LG-A)
+[https://l-a.me/lg-a/](https://l-a.me/lg-a/)
 
 ##### Screenshot: 6 tile layout (Game not started)
 ![6 tile](https://github.com/abhn/LG-A/raw/master/static/sixtile.png)

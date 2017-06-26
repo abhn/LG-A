@@ -71,7 +71,7 @@ export default class Layout extends React.Component {
 	}
 
 	/*
-   * gameOver() keeps track of highscores and stops timer 
+   * gameOver() keeps track of highscores and stops timer
    */
 	gameOver() {
 		// stop timer
@@ -99,7 +99,7 @@ export default class Layout extends React.Component {
 				<div class="pure-menu pure-menu-horizontal" style={this.state.navProps}>
 			    <b style={this.state.linkProps} class="pure-menu-heading">Memory Pairs</b>
 			    <ul class="pure-menu-list">
-		        <li class="pure-menu-item"><a href="https://www.nagekar.com/LG-A" style={this.state.linkProps} class="pure-menu-link">Demo</a></li>
+		        <li class="pure-menu-item"><a href="https://l-a.me/lg-a/" style={this.state.linkProps} class="pure-menu-link">Demo</a></li>
 		        <li class="pure-menu-item"><a href="https://github.com/abhn/LG-A" style={this.state.linkProps} class="pure-menu-link">Source Code</a></li>
 		        <li class="pure-menu-item"><a href="https://github.com/abhn/LG-A/blob/master/README.md" style={this.state.linkProps} class="pure-menu-link">Docs</a></li>
 			    </ul>

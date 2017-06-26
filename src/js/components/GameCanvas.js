@@ -39,8 +39,9 @@ export default class GameCanvas extends React.Component {
       textCoverProps: {
         pointerEvents:'none',
         position: 'relative',
+        fontSize: '4em',
         top: '40%',
-        transform: 'translateY(-25%)'
+        transform: 'translateY(-50%)'
       },
       canvasProps: {
         textAlign: 'center',
@@ -204,10 +205,10 @@ export default class GameCanvas extends React.Component {
 
         setTimeout(() => {
           // revert to hidden state
-          $(clickElemArr[0].lastElementChild).hide("slow");
-          $(clickElemArr[0].firstElementChild).fadeIn("slow");
-          $(clickElemArr[1].lastElementChild).hide("slow");
-          $(clickElemArr[1].firstElementChild).fadeIn("show");
+          $(clickElemArr[0].lastElementChild).hide();
+          $(clickElemArr[0].firstElementChild).show("slow");
+          $(clickElemArr[1].lastElementChild).hide();
+          $(clickElemArr[1].firstElementChild).show("show");
         }, 500);
 
         // reset state
@@ -236,7 +237,7 @@ export default class GameCanvas extends React.Component {
     for(let i=0; i<this.props.tiles; i++) {
       cardArr.push(
         <div key={i} class={`pure-u-1-${width}`} style={this.state.card} onClick={this.cardClick}>
-          <h4 style={this.state.textCoverProps}>Click To Reveal</h4>
+          <h4 style={this.state.textCoverProps}>★</h4>
           <h4 style={this.state.textProps}>{this.state.currArr[i]}</h4>
         </div>
       )
