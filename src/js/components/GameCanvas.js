@@ -53,10 +53,6 @@ export default class GameCanvas extends React.Component {
     this.makeCanvas();
   }
 
-  calcWidth() {
-		return 24 / this.props.tiles;
-	}
-
   processData() {
     let tempArr = [];
     Object.keys(this.state.gameData).forEach((key, index) => {
