@@ -87,7 +87,7 @@ export default class GameCanvas extends React.Component {
 	}
 
   /*
-   * Evaluate if the two consecutive clicked cards are on question/answer pair
+   * Evaluate if the two consecutive clicked cards are one question/answer pair
    */
   isCorrect(clickOne, clickTwo) {
     let gameData = this.state.gameData;
